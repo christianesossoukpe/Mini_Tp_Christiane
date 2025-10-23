@@ -1,11 +1,15 @@
-<script setup></script>
+<script setup>
+import TableauReactif from './components/TableauReactif.vue';
+
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+<h1>
+Manipulation de tableau avec JavaScript/vuejs
+</h1>
+<p>Tableau dynamique et champs personnalisables</p>
+
+<TableauReactif />
 </template>
 
 <style scoped></style>
