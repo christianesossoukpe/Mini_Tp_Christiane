@@ -12,9 +12,9 @@ const URL = "https://dummyjson.com/products";
 const visibleColumn = ref([]);
 
 const colonnes = computed(() => {
-    if(itemsProduits.value.length === 0) return [];
-    return Object.keys(itemsProduits.value[0]);
-})
+  if (itemsProduits.value.length === 0) return [];
+  return Object.keys(itemsProduits.value[0]);
+});
 const fetchProduits = async () => {
   isLoading.value = true;
   error.value = null;
@@ -35,12 +35,15 @@ const fetchProduits = async () => {
   <div v-if="isLoading">Chargement...</div>
   <div v-else>
     <div>
-        <label for="colonnes"
-        v-for="col in colonnes" :key="col">
-    <input type="checkbox" value="col" name="checkbox"
-    v-model="visibleColumn">
-{{ col }}    
-</label>
+      <label for="colonnes" v-for="col in colonnes" :key="col">
+        <input
+          type="checkbox"
+          value="col"
+          name="checkbox"
+          v-model="visibleColumn"
+        />
+        {{ col }}
+      </label>
     </div>
     <table>
       <thead>
@@ -55,4 +58,4 @@ const fetchProduits = async () => {
   </div>
 </template>
 
-<style scoped></style>
+ 
