@@ -2,14 +2,14 @@
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 
-// État de chargement 
+// État de chargement
 const isLoading = ref(false);
 
 // etat pour recuperer données des produits
 const itemsProduits = ref([]);
 // etat de gestion des erreurs de recuperation des donnees
 const error = ref(null);
-// etat pour les colonnes visible 
+// etat pour les colonnes visible
 const visibleColumn = ref([]);
 
 // URL API
@@ -37,7 +37,7 @@ const fetchProduits = async () => {
   }
 };
 
-// Colonnes dynamiques du tableau à afficher pour permettre de choisir les cases à cocher ou non 
+// Colonnes dynamiques du tableau à afficher pour permettre de choisir les cases à cocher ou non
 const colonnes = computed(() => {
   if (itemsProduits.value.length === 0) return [];
   return Object.keys(itemsProduits.value[0]);
@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="padding: 20px;">
+  <div style="padding: 20px">
     <!-- <h2>🛒 Tableau de produits dynamiques</h2> -->
 
     <div v-if="isLoading">Chargement...</div>
@@ -58,15 +58,15 @@ onMounted(() => {
 
     <div v-else>
       <!-- Filtres de colonnes de choix -->
-      <div v-if="colonnes.length" style="margin-bottom: 1rem;">
+      <div v-if="colonnes.length" style="margin-bottom: 1rem">
         <strong>Afficher les colonnes de la table des produits :</strong>
-        <div v-for="col in colonnes" :key="col" style="display: inline-block; margin-right: 10px;">
+        <div
+          v-for="col in colonnes"
+          :key="col"
+          style="display: inline-block; margin-right: 10px"
+        >
           <label>
-            <input
-              type="checkbox"
-              :value="col"
-              v-model="visibleColumn"
-            />
+            <input type="checkbox" :value="col" v-model="visibleColumn" />
             {{ col }}
           </label>
         </div>
@@ -100,7 +100,8 @@ table {
 }
 
 /* Style des cellules et en-têtes */
-th, td {
+th,
+td {
   border: 1px solid #000; /* bordure noire */
   padding: 8px;
   text-align: left;
@@ -123,7 +124,8 @@ input[type="checkbox"] {
 }
 
 /* Message de chargement ou d'erreur */
-div[v-if="isLoading"], div[v-else-if="error"] {
+div[v-if="isLoading"],
+div[v-else-if="error"] {
   font-weight: bold;
   margin-bottom: 10px;
 }
