@@ -23,6 +23,7 @@ const fetchProduits = async () => {
   try {
     const response = await axios.get(URL);
     const data = response.data;
+    console.log(data);
     // Vérifie que data.products est un tableau
     itemsProduits.value = Array.isArray(data.products) ? data.products : [];
 
@@ -53,8 +54,8 @@ onMounted(() => {
   <div style="padding: 20px">
     <!-- <h2>🛒 Tableau de produits dynamiques</h2> -->
 
-    <div v-if="isLoading">Chargement...</div>
-    <div v-else-if="error">{{ error }}</div>
+    <div v-if="isLoading" class="status">Chargement...</div>
+    <div v-else-if="error" class="status">{{ error }}</div>
 
     <div v-else>
       <!-- Filtres de colonnes de choix -->
@@ -83,8 +84,46 @@ onMounted(() => {
           <tr v-if="!itemsProduits.length">
             <td :colspan="visibleColumn.length">Aucun produit disponible</td>
           </tr>
+
           <tr v-for="(item, index) in itemsProduits" :key="index">
-            <td v-for="col in visibleColumn" :key="col">{{ item[col] }}</td>
+            <td v-for="col in visibleColumn" :key="col">
+              <template v-if="col === 'dimensions' && item[col]">
+                📏 {{ item[col].width }}x{{ item[col].height }}x{{
+                  item[col].depth
+                }}
+              </template>
+
+              <template
+                v-else-if="col === 'reviews' && Array.isArray(item[col])"
+              >
+                {{ item[col].length }} avis
+              </template>
+
+              <template v-else-if="col === 'meta' && item[col]">
+                🏷️ {{ item[col].barcode || "N/A" }}
+              </template>
+              <template v-else-if="col === 'tags' && Array.isArray(item[col])">
+                🏷️ {{ item[col].join(", ") }}
+              </template>
+               <template v-else-if="col === 'images' && Array.isArray(item[col])">
+                <div class="images-list">
+                  <img
+                    v-for="(img, i) in item[col].slice(0, 3)"  
+                    :key="i"
+                    :src="img"
+                    alt="Image du produit"
+                    class="image-mini"
+                  />
+                </div>
+              </template>
+              <template v-else-if="typeof item[col] === 'object'">
+                {{ JSON.stringify(item[col]) }}
+              </template>
+
+              <template v-else>
+                {{ item[col] }}
+              </template>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -124,9 +163,16 @@ input[type="checkbox"] {
 }
 
 /* Message de chargement ou d'erreur */
-div[v-if="isLoading"],
-div[v-else-if="error"] {
+.status {
   font-weight: bold;
   margin-bottom: 10px;
+}
+.image-mini {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
 }
 </style>
